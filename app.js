@@ -12,8 +12,8 @@ var socketio = require('./routes/socket-io');
 var main = require('./routes/main');
 var websocket = require('./websocket');
 var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+//var server = require('http').Server(app);
+//var io = require('socket.io')(server);
 var session = require('express-session');
 
 app.use(session({
@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-server.listen(443);
+//server.listen(443);
 
 
 // view engine setup
@@ -66,8 +66,8 @@ app.use(function(err, req, res, next) {
 
 
 //websocket connection
-websocket.server = io;
-io.on('connection',websocket.onconnection);
+//websocket.server = io;
+//io.on('connection',websocket.onconnection);
 
 
 module.exports = app;

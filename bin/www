@@ -5,6 +5,7 @@
  */
 
 var app = require('../app');
+var websocket = require('../websocket');
 var debug = require('debug')('unnamed-game:server');
 var http = require('http');
 
@@ -20,6 +21,15 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/*
+* Websocket connection
+* */
+var io = require('socket.io')(server);
+websocket.server = io;
+io.on('connection',websocket.onconnection);
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
