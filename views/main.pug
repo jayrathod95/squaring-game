@@ -56,8 +56,8 @@ html
                 });
 
                 //websocket connection
-                socket = io('http://10.222.129.170:3001/?playid=' + playid + '&username=' + username);
-                console.log('http://10.222.129.170:3001/?playid=' + playid + '&username=' + username);
+                socket = io('https://squaring-game.herokuapp.com:3001/?playid=' + playid + '&username=' + username);
+                console.log('https://squaring-game.herokuapp.com:3001/?playid=' + playid + '&username=' + username);
                 socket.on('ack', function (data) {
                     console.log(data);
                 });
