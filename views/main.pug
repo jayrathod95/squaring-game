@@ -56,6 +56,7 @@ html
                 });
 
                 //websocket connection
+                //test
                 socket = io('wss://squaring-game.herokuapp.com:3001/?playid=' + playid + '&username=' + username);
                 console.log('wss://squaring-game.herokuapp.com:3001/?playid=' + playid + '&username=' + username);
                 socket.on('ack', function (data) {
