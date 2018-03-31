@@ -1,0 +1,174 @@
+html
+    head
+        script( src="https://code.jquery.com/jquery-3.3.1.min.js")
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
+        script.
+            var socket;        
+            window.onbeforeunload = function(){
+                    return ''
+            }
+            window.onload = function () {
+                var myTurn = true;
+                var playid = $('#playid').html();
+                var username = $('#username').html();
+                var board = $('#board');
+                var dim = 6;
+                var n = 0;
+                for (i = 0; i < dim; i++) {
+                    for (j = 0; j < dim; j++) {
+                        id_dot = i + '-' + j;
+                        id_hbar = i + '-' + j + '-' + i + '-' + (j + 1);
+                        dot = "<span class='dot' id='" + id_dot + "'></span>"
+                        hbar = "<span class='hbar' id='" + id_hbar + "'></span>"
+                        board.append(dot);
+                        if (j != dim - 1) board.append(hbar);
+                    }
+                    board.append('<br/>');
+                    if (i != dim - 1)
+                        for (j = 0; j < dim; j++) {
+                            id_vbar = i + '-' + j + '-' + (i + 1) + '-' + j;
+                            vbar = "<span class='vbar' id='" + id_vbar + "'></span>"
+                            board.append(vbar);
+                            if (j != dim - 1) {
+                                space = "<span class='space' id='"+i+"_"+j+"' ></span>"
+                                board.append(space);
+                            }
+                        }
+                    board.append('<br/>');
+                }
+
+                $('.hbar,.vbar').each(function () {
+                    $(this).click(function () {
+                        if(myTurn){
+                                id = $(this).attr('id');
+                                if(socket){
+                                    myTurn = false;
+                                    socket.emit('markedge',{playid:playid,username:username,edgeid:id},function (data) {
+                                        console.log(data);
+                                        myTurn = (data.whoseTurnIsIt == username);
+                                        $('#'+data.edgeid).addClass('active');
+                                    });
+                                }
+                        }
+                    });
+
+
+                });
+
+                //websocket connection
+                socket = io('http://10.222.129.170:3001/?playid=' + playid + '&username=' + username);
+                console.log('http://10.222.129.170:3001/?playid=' + playid + '&username=' + username);
+                socket.on('ack', function (data) {
+                    console.log(data);
+                });
+                socket.on('peerjoin', function (data) {
+                    console.log(data);
+                    $('#opponent').html('User2: '+data.username);
+                });
+                socket.on('markedge',function (data) {
+                    console.log(data);
+                    console.log(data.whoseTurnIsIt == username);
+                    myTurn = (data.whoseTurnIsIt == username);
+                    console.log('myTurn: '+myTurn);
+                    $('#'+data.edgeid).addClass('active');
+                });
+                socket.on('markSquare',function(data){
+                        console.log(data);
+                        $('#'+data.squareid).addClass('filled');
+                        $('#'+data.squareid).html(data.markedBy.charAt(0).toUpperCase());
+                })
+
+
+            }
+
+
+    body
+        a(href='/play?new=true') Start New Game
+        br
+        span#playid #{session.playid}
+        | PlayID:
+        input(value=`${session.playid}`)
+        br
+        | User1:
+        span#username #{ session.username }
+        br
+        span#opponent User2: #{ session.opponent }
+        div(class='center-block')
+            div#board
+
+
+    style.
+
+
+
+        p {
+            margin-bottom: -4px;
+        }
+
+        .center-block {
+        top:50%;
+        left: 50%;
+        transform: translate3d(-50%,-50%, 0);
+        position: absolute;
+        }
+
+        .active{
+        background-color:green !important;
+        }
+
+        .hbar:hover, .vbar:hover{
+        background-color:green !important;
+        }
+
+
+
+        .dot{
+        height: 10px;
+        width:10px;
+        background-color: #8c8c8c;
+        border-radius: 50%;
+        display: inline-block;
+        }
+        .hbar{
+        height:10px;
+        width:50px;
+        background-color: #bbb;
+        display: inline-block;
+        }
+        .vbar{
+        height:50px;
+        width:10px;
+        background-color:#bbb;
+        display: inline-block;
+        }
+        .space{
+        position: relative;
+        top: -20px;
+        width:50px;
+        padding: 0;
+        background-color:white;
+        display: inline-block;
+        text-align:center;
+
+        }
+        .square{
+        height:50px;
+        width:50px;
+        background-color:white;
+        display: inline-block;
+        }
+        .border-top{
+        border-top: solid black;
+        }
+        .border-bottom{
+        border-bottom: solid black;
+        }
+        .border-left{
+        border-left: solid black;
+        }
+        .border-right{
+        border-right: solid black;
+        }
+        .filled{
+                background-color: yellow;
+        }

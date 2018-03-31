@@ -1,0 +1,43 @@
+html
+    head
+        title Starter
+        script( src="https://code.jquery.com/jquery-3.3.1.min.js")
+        script.
+              window.onload = function(){
+                  $('input[type=radio][name=mode]').on('change',function(){
+                      val = $(this).val()
+                      if(val == 'create') $('#a').hide();
+                      else if(val=='join') $('#a').show();
+                  })
+              }
+
+    
+    body
+        div(class = 'center-block')
+            form(action='' method='post')
+                input(name='mode' type='radio' value='create' checked)
+                |Create Game
+                input(name='mode' type='radio' value='join')
+                |Join Game
+                br
+                span Username
+                input#username(type='text' name='username' required)
+                div#a(hidden)
+                  span Play Id
+                  input#playid(type='text' name='playid')
+                input(type='submit')
+                br
+                span(class='err') #{ error }
+        
+    style.
+        
+        .center-block {
+          top:50%;
+          left: 50%;
+          transform: translate3d(-50%,-50%, 0);
+          position: absolute;
+        }
+        .err{
+            color:red;
+        }
+            

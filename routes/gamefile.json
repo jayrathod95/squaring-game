@@ -1,0 +1,18 @@
+{
+  "playid": "",
+  "maxplayers":"2",
+  "players":{
+    "user1":{
+      "username":"Jay",
+      "ws-id":"234334t4td3r3"
+    },
+    "user2":{
+      "username": "Kanika",
+      "ws-id":"34r4f4t44twsf4r"
+    }
+  },
+  "progress":{
+    "0-0-0-0":"user1",
+    "0-0-0-1":"user2"
+  }
+}
