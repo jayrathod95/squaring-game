@@ -42,10 +42,10 @@ html
                         if(myTurn){
                                 id = $(this).attr('id');
                                 if(socket){
-                                    myTurn = false;
+                                    //myTurn = false;
                                     socket.emit('markedge',{playid:playid,username:username,edgeid:id},function (data) {
                                         console.log(data);
-                                        myTurn = (data.whoseTurnIsIt == username);
+                                        //myTurn = (data.whoseTurnIsIt == username);
                                         $('#'+data.edgeid).addClass('active');
                                     });
                                 }
@@ -69,7 +69,7 @@ html
                 socket.on('markedge',function (data) {
                     console.log(data);
                     console.log(data.whoseTurnIsIt == username);
-                    myTurn = (data.whoseTurnIsIt == username);
+                    //myTurn = (data.whoseTurnIsIt == username);
                     console.log('myTurn: '+myTurn);
                     $('#'+data.edgeid).addClass('active');
                 });
